@@ -1,7 +1,0 @@
-../Components/FileSystem/SoarFileSystemExample.cpp:21:6:void SoarFS_Example_Init()	16	static
-../Components/FileSystem/SoarFileSystemExample.cpp:51:6:void SoarFS_Example_CreateFile()	16	static
-../Components/FileSystem/SoarFileSystemExample.cpp:81:6:void SoarFS_Example_FileOperations()	288	static
-../Components/FileSystem/SoarFileSystemExample.cpp:124:6:void SoarFS_Example_LogSensorData(float, float, uint32_t)	160	static
-../Components/FileSystem/SoarFileSystemExample.cpp:153:6:void SoarFS_Example_StoreBinaryData()	88	static
-../Components/FileSystem/SoarFileSystemExample.cpp:208:6:void SoarFS_Example_FileManagement()	24	static
-../Components/FileSystem/SoarFileSystemExample.cpp:246:6:void SoarFS_Example_ErrorHandling(SoarFS_Result_t)	16	static

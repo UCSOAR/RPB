@@ -47,6 +47,10 @@ constexpr uint8_t TASK_DEBUG_PRIORITY = 2;             // Priority of the debug 
 constexpr uint8_t TASK_DEBUG_QUEUE_DEPTH_OBJS = 10;    // Size of the debug task queue
 constexpr uint16_t TASK_DEBUG_STACK_DEPTH_WORDS = 512; // Size of the debug task stack
 
+constexpr uint8_t TASK_RPB_PRIORITY = 2;             // Priority of the debug task
+constexpr uint8_t TASK_RPB_QUEUE_DEPTH_OBJS = 10;    // Size of the debug task queue
+constexpr uint16_t TASK_RPB_STACK_DEPTH_WORDS = 512; // Size of the debug task stack
+
 // FILESYSTEM TASK
 constexpr uint8_t TASK_FILESYSTEM_TASK_PRIORITY = 3;         // Priority of the filesystem task
 constexpr uint8_t TASK_FILESYSTEM_QUEUE_DEPTH_OBJS = 8;      // Size of the filesystem task queue

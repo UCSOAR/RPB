@@ -32,4 +32,12 @@ void cpp_USART2_IRQHandler();
 }
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+void cpp_USART4_IRQHandler();
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* C__IFACE_HPP_ */

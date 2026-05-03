@@ -10,11 +10,10 @@
 #include "Command.hpp"
 #include "CubeUtils.hpp"
 #include <cstring>
-
+#include "CANTask.hpp"
 #include "stm32g4xx_hal.h"
 
 // External Tasks (to send debug commands to)
-#include "FileSystemTask.hpp"
 
 /* Macros --------------------------------------------------------------------*/
 
@@ -91,27 +90,9 @@ void DebugTask::Run(void *pvParams)
  */
 void DebugTask::HandleDebugMessage(const char *msg)
 {
-  //-- FILESYSTEM COMMANDS --
-  if (strcmp(msg, "fs_test") == 0)
-  {
-    SOAR_PRINT("Debug: Triggering file system tests\n");
-    FileSystemTask::Inst().TriggerTest();
-  }
-  else if (strcmp(msg, "fs_log") == 0)
-  {
-    SOAR_PRINT("Debug: Triggering sensor data logging\n");
-    // Sample data for testing
-    float temp = 25.5f + (HAL_GetTick() % 100) / 10.0f;     // Simulate varying temperature
-    float humidity = 60.0f + (HAL_GetTick() % 200) / 10.0f; // Simulate varying humidity
-    FileSystemTask::Inst().TriggerLogData(temp, humidity, HAL_GetTick());
-  }
-  else if (strcmp(msg, "fs_cleanup") == 0)
-  {
-    SOAR_PRINT("Debug: Triggering file system cleanup\n");
-    FileSystemTask::Inst().TriggerCleanup();
-  }
+
   //-- SYSTEM / CHAR COMMANDS -- (Must be last)
-  else if (strcmp(msg, "sysreset") == 0)
+   if (strcmp(msg, "sysreset") == 0)
   {
     // Reset the system
     SOAR_ASSERT(false, "System reset requested");
@@ -126,6 +107,16 @@ void DebugTask::HandleDebugMessage(const char *msg)
     SOAR_PRINT("Debug Task Runtime  \t: %d ms\n\n",
                TICKS_TO_MS(xTaskGetTickCount()));
   }
+  else if (strcmp(msg, "send1") == 0) {
+	  SOAR_PRINT("sending1");
+	  RPB_AIR_BRAKES_COMMAND cmd = {true};
+	  CANTask::Inst().CANSendToMotherboardDirect(_RPB_AIR_BRAKES_COMMAND_LOGINDEX, (uint8_t*)&cmd);
+  }
+  else if (strcmp(msg, "send0") == 0) {
+	  SOAR_PRINT("sending0");
+	  RPB_AIR_BRAKES_COMMAND cmd = {false};
+	  CANTask::Inst().CANSendToMotherboardDirect(_RPB_AIR_BRAKES_COMMAND_LOGINDEX, (uint8_t*)&cmd);
+  }
   else
   {
     // Single character command, or unknown command
@@ -135,9 +126,6 @@ void DebugTask::HandleDebugMessage(const char *msg)
       SOAR_PRINT("\n-- DEBUG COMMANDS --\n");
       SOAR_PRINT("sysinfo  - System information\n");
       SOAR_PRINT("sysreset - System reset\n");
-      SOAR_PRINT("fs_test  - Run file system tests\n");
-      SOAR_PRINT("fs_log   - Log sample sensor data\n");
-      SOAR_PRINT("fs_cleanup - Run file system cleanup\n");
       SOAR_PRINT("h        - Show this help\n\n");
       break;
     default:
