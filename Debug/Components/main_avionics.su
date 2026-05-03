@@ -1,8 +1,0 @@
-C:/cygwin64/home/spiro/SOAR/STM32G491METemplateRepository/SoarOS/Drivers/Inc/UARTDriver.hpp:37:2:UARTDriver::UARTDriver(USART_TypeDef*)	16	static
-C:/cygwin64/home/spiro/SOAR/STM32G491METemplateRepository/Components/SoarDebug/Inc/DebugTask.hpp:26:21:static DebugTask& DebugTask::Inst()	8	static
-C:/cygwin64/home/spiro/SOAR/STM32G491METemplateRepository/SoarOS/CubeTask.hpp:32:22:static CubeTask& CubeTask::Inst()	8	static
-C:/cygwin64/home/spiro/SOAR/STM32G491METemplateRepository/SoarOS/CubeTask.hpp:47:5:CubeTask::CubeTask()	16	static
-C:/cygwin64/home/spiro/SOAR/STM32G491METemplateRepository/Components/FileSystem/Inc/FileSystemTask.hpp:34:28:static FileSystemTask& FileSystemTask::Inst()	8	static
-../Components/main_avionics.cpp:27:6:void run_main()	8	static
-../Components/main_avionics.cpp:58:1:void __static_initialization_and_destruction_0()	8	static
-../Components/main_avionics.cpp:58:1:cpp)	8	static

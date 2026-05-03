@@ -10,7 +10,7 @@
 #include "Command.hpp"
 #include "CubeUtils.hpp"
 #include <cstring>
-#include "RPBTask.hpp"
+#include "CANTask.hpp"
 #include "stm32g4xx_hal.h"
 
 // External Tasks (to send debug commands to)
@@ -110,12 +110,12 @@ void DebugTask::HandleDebugMessage(const char *msg)
   else if (strcmp(msg, "send1") == 0) {
 	  SOAR_PRINT("sending1");
 	  RPB_AIR_BRAKES_COMMAND cmd = {true};
-	  RPBTask::Inst().CANSendToMotherboardDirect(RPB_RPB_AIR_BRAKES_COMMAND_LOGINDEX, (uint8_t*)&cmd);
+	  CANTask::Inst().CANSendToMotherboardDirect(_RPB_AIR_BRAKES_COMMAND_LOGINDEX, (uint8_t*)&cmd);
   }
   else if (strcmp(msg, "send0") == 0) {
 	  SOAR_PRINT("sending0");
 	  RPB_AIR_BRAKES_COMMAND cmd = {false};
-	  RPBTask::Inst().CANSendToMotherboardDirect(RPB_RPB_AIR_BRAKES_COMMAND_LOGINDEX, (uint8_t*)&cmd);
+	  CANTask::Inst().CANSendToMotherboardDirect(_RPB_AIR_BRAKES_COMMAND_LOGINDEX, (uint8_t*)&cmd);
   }
   else
   {
@@ -126,9 +126,6 @@ void DebugTask::HandleDebugMessage(const char *msg)
       SOAR_PRINT("\n-- DEBUG COMMANDS --\n");
       SOAR_PRINT("sysinfo  - System information\n");
       SOAR_PRINT("sysreset - System reset\n");
-      SOAR_PRINT("fs_test  - Run file system tests\n");
-      SOAR_PRINT("fs_log   - Log sample sensor data\n");
-      SOAR_PRINT("fs_cleanup - Run file system cleanup\n");
       SOAR_PRINT("h        - Show this help\n\n");
       break;
     default:

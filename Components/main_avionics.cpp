@@ -11,7 +11,7 @@
 #include "UARTDriver.hpp"
 #include "CubeTask.hpp"
 #include "UARTTask.hpp"
-#include "RPBTask.hpp"
+#include "CANTask.hpp"
 
 /* Drivers ------------------------------------------------------------------*/
 namespace Driver
@@ -31,7 +31,7 @@ void run_main()
 	UARTTask::Inst().InitTask();
   CubeTask::Inst().InitTask();
   DebugTask::Inst().InitTask();
-  RPBTask::Inst().InitTask();
+  CANTask::Inst().InitTask();
 
   // Print System Boot Info : Warning, don't queue more than 10 prints before
   // scheduler starts
