@@ -18,7 +18,7 @@ bool CANTask::CANSendToMotherboardDirect(uint16_t logID, const uint8_t *msg) {
 /**
  * @brief Constructor, sets up task
  */
-CANTask::CANTask() : Task(TASK_RPB_QUEUE_DEPTH_OBJS)
+CANTask::CANTask() : Task(TASK_CAN_QUEUE_DEPTH_OBJS)
 {
 
 }
@@ -35,9 +35,9 @@ void CANTask::InitTask()
 	BaseType_t rtValue =
 			xTaskCreate((TaskFunction_t)CANTask::RunTask,
 					(const char *)"RPBTask",
-					(uint16_t)TASK_RPB_STACK_DEPTH_WORDS,
+					(uint16_t)TASK_CAN_STACK_DEPTH_WORDS,
 					(void *)this,
-					(UBaseType_t)TASK_RPB_PRIORITY,
+					(UBaseType_t)TASK_CAN_PRIORITY,
 					(TaskHandle_t *)&rtTaskHandle);
 
 	// Ensure creation succeded

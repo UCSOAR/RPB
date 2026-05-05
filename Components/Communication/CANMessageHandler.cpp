@@ -7,6 +7,7 @@
 
 
 #include "CANTask.hpp"
+#include "AirbrakesTask.hpp"
 
 /* @brief Handle user-defined CANBus messages.
  * @return true if any message found.
@@ -17,6 +18,11 @@ bool CANTask::HandleCANCommands() {
 		RPB_AIR_BRAKES_COMMAND cmd;
 		if(dau.ReadMessageByLogIndex(_RPB_AIR_BRAKES_COMMAND_LOGINDEX, (uint8_t*)&cmd, sizeof(cmd))) {
 			SOAR_PRINT("got airbrakes cmd %d\n",cmd.openAirBrakes);
+			if(cmd.openAirBrakes) {
+				AirbrakesTask::Inst().SendCommand({TASK_SPECIFIC_COMMAND, Airbrakes_COMMAND_ENABLE});
+			} else {
+				AirbrakesTask::Inst().SendCommand({TASK_SPECIFIC_COMMAND, Airbrakes_COMMAND_DISABLE});
+			}
 		}
 		foundone= true;
 	}
@@ -35,6 +41,7 @@ bool CANTask::HandleCANCommands() {
 		}
 		foundone = true;
 	}
+
 
 	return foundone;
 };
