@@ -51,25 +51,10 @@ void AirbrakesTask::Run(void *pvParams)
 
 	osDelay(500);
 
-
-	airbrakesDriver.Enable();
-
-	uint16_t test = 0;
-	uint16_t testlevel = 0;
 	while (1)
 	{
 		/* Process commands */
 
-		test++;
-
-		if(test >= 20) {
-			test = 0;
-			airbrakesDriver.SetTargetLevel(testlevel);
-			testlevel++;
-			if(testlevel >= AIRBRAKES_NUM_DEPLOYMENT_LEVELS) {
-				testlevel = 0;
-			}
-		}
 		Command cm;
 		bool res = qEvtQueue->Receive(cm);
 		if (res)
@@ -78,7 +63,8 @@ void AirbrakesTask::Run(void *pvParams)
 		}
 
 		airbrakesDriver.Adjust();
-		osDelay(50);
+
+		osDelay(20);
 
 	}
 
@@ -106,10 +92,8 @@ void AirbrakesTask::HandleCommand(Command &cm)
 			break;
 
 		case Airbrakes_COMMAND_DISABLE:
-			airbrakesDriver.SetTargetLevel(0);
 			airbrakesDriver.Disable();
 			break;
-
 
 		default:
 			SOAR_PRINT("AirbrakesTask - Received Unsupported Task Command {%d}\n", cm.GetTaskCommand());

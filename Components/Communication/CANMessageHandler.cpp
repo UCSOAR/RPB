@@ -28,6 +28,18 @@ bool CANTask::HandleCANCommands() {
 	}
 
 	{
+		RPB_FROM_DAQ_AIR_BRAKES_LEVEL cmd;
+		if(dau.ReadMessageByLogIndex(_RPB_FROM_DAQ_AIR_BRAKES_LEVEL_LOGINDEX, (uint8_t*)&cmd, sizeof(cmd))) {
+			SOAR_PRINT("got airbrakes lvl cmd %d\n",cmd.level);
+			Command cm = {TASK_SPECIFIC_COMMAND, Airbrakes_COMMAND_SET_LEVEL};
+			cm.CopyDataToCommand(&cmd.level, sizeof(cmd.level));
+			AirbrakesTask::Inst().SendCommandReference(cm);
+
+		}
+		foundone= true;
+	}
+
+	{
 		RPB_CAMERA_POWER_COMMAND cmd;
 		if(dau.ReadMessageByLogIndex(_RPB_CAMERA_POWER_COMMAND_LOGINDEX, (uint8_t*)&cmd, sizeof(cmd))) {
 			SOAR_PRINT("got cam power cmd %d\n",cmd.cameraOn);

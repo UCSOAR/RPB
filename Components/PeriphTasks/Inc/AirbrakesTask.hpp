@@ -57,16 +57,12 @@ private:
     AirbrakesTask();                                  // Private constructor
     AirbrakesTask(const AirbrakesTask &);            // Prevent copy-construction
     AirbrakesTask &operator=(const AirbrakesTask &); // Prevent assignment
-//
-//    (TIM_HandleTypeDef* servoPWMTimer, ADC_HandleTypeDef* servoADCHandle,
-//    			GPIO_TypeDef* servoENPort, uint16_t servoENPin,
-//    					GPIO_TypeDef* servoLatchResetPort, uint16_t servoLatchResetPin,
-//    					GPIO_TypeDef* comparatorPort, uint16_t comparatorPin);
+
 
 	AirbrakesDriver airbrakesDriver = {&htim3, &hadc2,
 			Servo_Enable_GPIO_Output_GPIO_Port, Servo_Enable_GPIO_Output_Pin,
 			Latch_Resent_GPIO_Output_GPIO_Port, Latch_Resent_GPIO_Output_Pin,
-			Latch_Status_GPIO_Input_GPIO_Port, Latch_Status_GPIO_Input_Pin};
+			Latch_Status_GPIO_Input_GPIO_Port, Latch_Status_GPIO_Input_Pin, 71.806};
 
 };
 
