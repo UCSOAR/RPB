@@ -59,7 +59,7 @@ private:
     CANTask(const CANTask &);            // Prevent copy-construction
     CANTask &operator=(const CANTask &); // Prevent assignment
 
-    CanAutoNodeDaughter dau = {&hfdcan1,RPB_Init,RPB_LogIndexes::_COUNT,123,123,CAN_ROCKET_TARGET_RPB};
+    CanAutoNodeDaughter dau = {&hfdcan1,RPB_Init,RPB_LogIndexes::RPB_COUNT,CAN_ROCKET_TARGET_RPB_BOARDTYPE,0,CAN_ROCKET_TARGET_RPB};
 
 };
 
