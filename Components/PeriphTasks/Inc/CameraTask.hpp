@@ -18,24 +18,21 @@
 #include "TMUX1104Driver.hpp"
 
 /* Enums ------------------------------------------------------------------*/
-enum Camera_TASK_COMMANDS
+enum CAMERA_TASK_COMMANDS
 {
-	Camera_COMMAND_NONE = 0,
-    Camera_COMMAND_SELECT,
-	Camera_COMMAND_VIDEO_ENABLE,
-	Camera_COMMAND_VIDEO_DISABLE,
-	Camera_COMMAND_START_RECORDING,
-	Camera_COMMAND_STOP_RECORDING,
-	Camera_COMMAND_POWER_ON,
-	Camera_COMMAND_POWER_OFF
+	CAMERA_COMMAND_NONE = 0,
+    CAMERA_COMMAND_SELECT,
+	CAMERA_COMMAND_VIDEO_ENABLE,
+	CAMERA_COMMAND_VIDEO_DISABLE,
+	CAMERA_COMMAND_START_RECORDING,
+	CAMERA_COMMAND_STOP_RECORDING,
+	CAMERA_COMMAND_POWER_ON,
+	CAMERA_COMMAND_POWER_OFF
 };
 
 /* Macros ------------------------------------------------------------------*/
 
 extern SPI_HandleTypeDef hspi2;
-//extern UART_HandleTypeDef huart1;
-//extern UART_HandleTypeDef huart2;
-//extern UART_HandleTypeDef huart3;
 
 /* Class ------------------------------------------------------------------*/
 class CameraTask : public Task

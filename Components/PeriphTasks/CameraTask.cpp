@@ -134,7 +134,7 @@ void CameraTask::HandleCommand(Command &cm)
 		switch (cm.GetTaskCommand())
 		{
 
-		case Camera_COMMAND_SELECT: {
+		case CAMERA_COMMAND_SELECT: {
 			uint8_t cam = *cm.GetDataPointer();
 			switch (cam) {
 			case 0:
@@ -152,17 +152,17 @@ void CameraTask::HandleCommand(Command &cm)
 
 		}
 
-		case Camera_COMMAND_VIDEO_DISABLE:
+		case CAMERA_COMMAND_VIDEO_DISABLE:
 			osdDriver.OSD_SetVideoEnabled(false);
 			HAL_GPIO_WritePin(VideoTX_Enable_GPIO_Port,VideoTX_Enable_Pin,GPIO_PIN_RESET);
 			break;
 
-		case Camera_COMMAND_VIDEO_ENABLE:
+		case CAMERA_COMMAND_VIDEO_ENABLE:
 			osdDriver.OSD_SetVideoEnabled(true);
 			HAL_GPIO_WritePin(VideoTX_Enable_GPIO_Port,VideoTX_Enable_Pin,GPIO_PIN_SET);
 			break;
 
-		case Camera_COMMAND_START_RECORDING: {
+		case CAMERA_COMMAND_START_RECORDING: {
 			uint8_t cam = *cm.GetDataPointer();
 			USART_TypeDef* uart;
 			switch (cam) {
@@ -182,7 +182,7 @@ void CameraTask::HandleCommand(Command &cm)
 			RunCamCommand(uart, 0x03);
 			break;
 		}
-		case Camera_COMMAND_STOP_RECORDING: {
+		case CAMERA_COMMAND_STOP_RECORDING: {
 			uint8_t cam = *cm.GetDataPointer();
 			USART_TypeDef* uart;
 			switch (cam) {
@@ -203,7 +203,7 @@ void CameraTask::HandleCommand(Command &cm)
 
 			break;
 		}
-		case Camera_COMMAND_POWER_ON: {
+		case CAMERA_COMMAND_POWER_ON: {
 			uint8_t cam = *cm.GetDataPointer();
 			switch(cam) {
 			case 0:
@@ -217,10 +217,11 @@ void CameraTask::HandleCommand(Command &cm)
 				break;
 			default:
 				SOAR_PRINT("invalid cam %d\n",cam);
+				return;
 			}
 			break;
 		}
-		case Camera_COMMAND_POWER_OFF: {
+		case CAMERA_COMMAND_POWER_OFF: {
 			uint8_t cam = *cm.GetDataPointer();
 			switch(cam) {
 			case 0:
@@ -234,6 +235,7 @@ void CameraTask::HandleCommand(Command &cm)
 				break;
 			default:
 				SOAR_PRINT("invalid cam %d\n",cam);
+				return;
 			}
 			break;
 		}
