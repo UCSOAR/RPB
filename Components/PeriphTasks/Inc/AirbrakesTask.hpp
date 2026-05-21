@@ -17,12 +17,12 @@
 #include "main.h"
 
 /* Enums ------------------------------------------------------------------*/
-enum Airbrakes_TASK_COMMANDS
+enum AIRBRAKES_TASK_COMMANDS
 {
-	Airbrakes_COMMAND_NONE = 0,
-    Airbrakes_COMMAND_SET_LEVEL,
-	Airbrakes_COMMAND_ENABLE,
-	Airbrakes_COMMAND_DISABLE
+	AIRBRAKES_COMMAND_NONE = 0,
+    AIRBRAKES_COMMAND_SET_LEVEL,
+	AIRBRAKES_COMMAND_OPEN,
+	AIRBRAKES_COMMAND_CLOSE
 };
 
 /* Macros ------------------------------------------------------------------*/

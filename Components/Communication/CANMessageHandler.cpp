@@ -19,9 +19,9 @@ bool CANTask::HandleCANCommands() {
 		if(dau.ReadMessageByLogIndex(_RPB_AIR_BRAKES_COMMAND_LOGINDEX, (uint8_t*)&cmd, sizeof(cmd))) {
 			SOAR_PRINT("got airbrakes cmd %d\n",cmd.openAirBrakes);
 			if(cmd.openAirBrakes) {
-				AirbrakesTask::Inst().SendCommand({TASK_SPECIFIC_COMMAND, Airbrakes_COMMAND_ENABLE});
+				AirbrakesTask::Inst().SendCommand({TASK_SPECIFIC_COMMAND, AIRBRAKES_COMMAND_OPEN});
 			} else {
-				AirbrakesTask::Inst().SendCommand({TASK_SPECIFIC_COMMAND, Airbrakes_COMMAND_DISABLE});
+				AirbrakesTask::Inst().SendCommand({TASK_SPECIFIC_COMMAND, AIRBRAKES_COMMAND_CLOSE});
 			}
 		}
 		foundone= true;
@@ -31,7 +31,7 @@ bool CANTask::HandleCANCommands() {
 		RPB_FROM_DAQ_AIR_BRAKES_LEVEL cmd;
 		if(dau.ReadMessageByLogIndex(_RPB_FROM_DAQ_AIR_BRAKES_LEVEL_LOGINDEX, (uint8_t*)&cmd, sizeof(cmd))) {
 			SOAR_PRINT("got airbrakes lvl cmd %d\n",cmd.level);
-			Command cm = {TASK_SPECIFIC_COMMAND, Airbrakes_COMMAND_SET_LEVEL};
+			Command cm = {TASK_SPECIFIC_COMMAND, AIRBRAKES_COMMAND_SET_LEVEL};
 			cm.CopyDataToCommand(&cmd.level, sizeof(cmd.level));
 			AirbrakesTask::Inst().SendCommandReference(cm);
 

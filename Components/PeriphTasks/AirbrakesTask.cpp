@@ -82,16 +82,16 @@ void AirbrakesTask::HandleCommand(Command &cm)
 		switch (cm.GetTaskCommand())
 		{
 
-		case Airbrakes_COMMAND_SET_LEVEL: {
+		case AIRBRAKES_COMMAND_SET_LEVEL: {
 			uint8_t lvl = *cm.GetDataPointer();
 			airbrakesDriver.SetTargetLevel(lvl);
 			break;
 		}
-		case Airbrakes_COMMAND_ENABLE:
+		case AIRBRAKES_COMMAND_OPEN:
 			airbrakesDriver.Enable();
 			break;
 
-		case Airbrakes_COMMAND_DISABLE:
+		case AIRBRAKES_COMMAND_CLOSE:
 			airbrakesDriver.Disable();
 			break;
 
