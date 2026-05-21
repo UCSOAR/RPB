@@ -39,21 +39,6 @@ bool CANTask::HandleCANCommands() {
 		foundone= true;
 	}
 
-	{
-		RPB_CAMERA_POWER_COMMAND cmd;
-		if(dau.ReadMessageByLogIndex(_RPB_CAMERA_POWER_COMMAND_LOGINDEX, (uint8_t*)&cmd, sizeof(cmd))) {
-			SOAR_PRINT("got cam power cmd %d\n",cmd.cameraOn);
-		}
-		foundone = true;
-	}
-	{
-		RPB_CAMERA_RECORDING_COMMAND cmd;
-		if(dau.ReadMessageByLogIndex(_RPB_CAMERA_RECORDING_COMMAND_LOGINDEX, (uint8_t*)&cmd, sizeof(cmd))) {
-			SOAR_PRINT("got cam record cmd %d\n",cmd.startRecording);
-		}
-		foundone = true;
-	}
-
 
 	return foundone;
 };
