@@ -113,6 +113,9 @@ void CameraTask::Run(void *pvParams)
 			osdDriver.OSD_DrawLogo(0xE0, 1, 1,5,1);
 			osdDriver.OSD_DrawLogo(0xD0, 1, 11,5,1);
 
+			osdDriver.OSD_SetVideoEnabled(true);
+			HAL_GPIO_WritePin(VideoTX_Enable_GPIO_Port,VideoTX_Enable_Pin,GPIO_PIN_SET);
+
 			needToResetOSD = false;
 
 
