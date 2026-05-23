@@ -84,7 +84,8 @@ void CANTask::Run(void *pvParams)
 		if(dau.GetCurrentState() == CanAutoNodeDaughter::ERROR) {
 			while(1) {
 				SOAR_PRINT("canautonode errored out!\n");
-				osDelay(500);
+				osDelay(1500);
+				dau.ExitErrorState();
 			}
 
 		}
