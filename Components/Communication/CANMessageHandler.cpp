@@ -22,6 +22,10 @@ bool CANTask::HandleCANCommands() {
 			if(cmd.openAirBrakes) {
 				AirbrakesTask::Inst().SendCommand({TASK_SPECIFIC_COMMAND,AIRBRAKES_COMMAND_OPEN});
 
+			} else {
+				AirbrakesTask::Inst().SendCommand({TASK_SPECIFIC_COMMAND,AIRBRAKES_COMMAND_CLOSE});
+
+
 			}
 
 

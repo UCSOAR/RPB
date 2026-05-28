@@ -53,6 +53,7 @@ void AirbrakesTask::Run(void *pvParams)
 	osDelay(500);
 
 	airbrakesDriver.Enable();
+	storedLevel = 5;
 	while (1)
 	{
 		/* Process commands */
@@ -91,7 +92,9 @@ void AirbrakesTask::HandleCommand(Command &cm)
 		case AIRBRAKES_COMMAND_SET_LEVEL: {
 			uint8_t lvl = *cm.GetDataPointer();
 			storedLevel = lvl;
-			airbrakesDriver.SetTargetLevel(lvl);
+			if(goodToOpen) {
+				airbrakesDriver.SetTargetLevel(lvl);
+			}
 			break;
 		}
 		case AIRBRAKES_COMMAND_OPEN:
