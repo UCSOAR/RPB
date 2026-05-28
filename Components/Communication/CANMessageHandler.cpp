@@ -8,6 +8,7 @@
 
 #include "CANTask.hpp"
 #include "CameraTask.hpp"
+#include "AirbrakesTask.hpp"
 
 /* @brief Handle user-defined CANBus messages.
  * @return true if any message found.
@@ -18,6 +19,25 @@ bool CANTask::HandleCANCommands() {
 		RPB_AIR_BRAKES_COMMAND cmd;
 		if(dau.ReadMessageByLogIndex(_RPB_AIR_BRAKES_COMMAND_LOGINDEX, (uint8_t*)&cmd, sizeof(cmd))) {
 			SOAR_PRINT("got airbrakes cmd %d\n",cmd.openAirBrakes);
+			if(cmd.openAirBrakes) {
+				AirbrakesTask::Inst().SendCommand({TASK_SPECIFIC_COMMAND,AIRBRAKES_COMMAND_OPEN});
+
+			}
+
+
+		}
+		foundone= true;
+	}
+
+	{
+		RPB_FROM_DAQ_AIR_BRAKES_LEVEL cmd;
+		if(dau.ReadMessageByLogIndex(_RPB_FROM_DAQ_AIR_BRAKES_LEVEL_LOGINDEX, (uint8_t*)&cmd, sizeof(cmd))) {
+			SOAR_PRINT("got airbrakes lvl cmd %d\n",cmd.level);
+			Command cm = {TASK_SPECIFIC_COMMAND,AIRBRAKES_COMMAND_SET_LEVEL};
+			cm.CopyDataToCommand(&cmd.level, sizeof(cmd.level));
+			AirbrakesTask::Inst().SendCommandReference(cm);
+
+
 		}
 		foundone= true;
 	}
