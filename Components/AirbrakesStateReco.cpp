@@ -30,18 +30,18 @@ StateRecoverer::StateRecoverer(uint32_t startAddress, uint32_t pageCount)
     }
 }
 
-bool StateRecoverer::GetMostRecentState() {
+int32_t StateRecoverer::GetMostRecentState() {
 	StateSave recentSave;
 	uint32_t page, off;
 	if (FindMostRecent(recentSave, page, off)) {
-		return recentSave.airbrakes != 0;
+		return recentSave.level;
 	}
-	return false;
+	return -1; // Return -1 to indicate no valid state was recovered
 }
 
-bool StateRecoverer::SaveState(bool airbrakes) {
+bool StateRecoverer::SaveState(int32_t level) {
 	StateSave s;
-	s.airbrakes = airbrakes ? 1 : 0;
+	s.level = level;
 	s.tick = HAL_GetTick();
 	s.gen = generation;
 	s.checksum = GetChecksum(s);
@@ -59,10 +59,10 @@ bool StateRecoverer::SaveState(bool airbrakes) {
 
 	uint32_t writeAddress = pageAddress + (currentWriteOffset * sizeof(StateSave));
 
-    uint64_t* dataChunks = (uint64_t*)&s;
+	uint64_t* dataChunks = (uint64_t*)&s;
 
 	if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, writeAddress, dataChunks[0]) != HAL_OK ||
-        HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, writeAddress + 8, dataChunks[1]) != HAL_OK) {
+		HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, writeAddress + 8, dataChunks[1]) != HAL_OK) {
 		HAL_FLASH_Lock();
 		return false;
 	}
@@ -92,7 +92,8 @@ bool StateRecoverer::ErasePage(uint32_t pageAddress) {
 }
 
 uint32_t StateRecoverer::GetChecksum(const StateSave& save) const {
-	uint32_t buf[] = {save.airbrakes, save.tick, save.gen};
+	// Cast 'level' to uint32_t to satisfy the CRC buffer array type
+	uint32_t buf[] = {static_cast<uint32_t>(save.level), save.tick, save.gen};
 	return HAL_CRC_Calculate(&hcrc, &buf[0], sizeof(buf)/sizeof(uint32_t));
 }
 

@@ -54,6 +54,11 @@ void AirbrakesTask::Run(void *pvParams)
 
 	airbrakesDriver.Enable();
 	storedLevel = 5;
+
+	int32_t lastState = StateRecoverer::Inst().GetMostRecentState();
+	if(lastState >= 0) {
+		airbrakesDriver.SetTargetLevel(lastState);
+	}
 	while (1)
 	{
 		/* Process commands */
@@ -94,17 +99,20 @@ void AirbrakesTask::HandleCommand(Command &cm)
 			storedLevel = lvl;
 			if(goodToOpen) {
 				airbrakesDriver.SetTargetLevel(lvl);
+				StateRecoverer::Inst().SaveState(lvl);
 			}
 			break;
 		}
 		case AIRBRAKES_COMMAND_OPEN:
 			goodToOpen = true;
 			airbrakesDriver.SetTargetLevel(storedLevel);
+			StateRecoverer::Inst().SaveState(storedLevel);
 			break;
 
 		case AIRBRAKES_COMMAND_CLOSE:
 			goodToOpen = false;
 			airbrakesDriver.SetTargetLevel(0);
+			StateRecoverer::Inst().SaveState(0);
 			break;
 
 		default:

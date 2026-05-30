@@ -23,8 +23,11 @@ public:
 
 	StateRecoverer(uint32_t startAddress, uint32_t pageCount);
 
-	bool GetMostRecentState();
-	bool SaveState(bool airbrakes);
+	// Returns the saved level (e.g. 0-9), or -1 if no valid state exists
+	int32_t GetMostRecentState();
+
+	// Saves the specified integer level
+	bool SaveState(int32_t level);
 
 private:
 	const uint32_t startAddress;
@@ -36,9 +39,9 @@ private:
 	uint32_t currentWriteOffset;
 
 	struct StateSave {
-        // Stored as uint32_t internally to prevent uninitialized struct padding bytes
-        // from breaking the hardware CRC or the 64-bit flash write boundaries.
-		uint32_t airbrakes;
+		// Maintained at 32-bits to prevent uninitialized struct padding bytes
+		// from breaking the hardware CRC or the 64-bit flash write boundaries.
+		int32_t level;
 		uint32_t tick;
 		uint32_t gen;
 		uint32_t checksum;
@@ -47,7 +50,7 @@ private:
 	uint32_t GetChecksum(const StateSave& save) const;
 	bool FindMostRecent(StateSave& outSave, uint32_t& outPage, uint32_t& outOffset);
 	StateSave ReadSave(uint32_t pageIdx, uint32_t offsetIdx);
-    bool ErasePage(uint32_t pageAddress);
+	bool ErasePage(uint32_t pageAddress);
 };
 
 #endif /* FLIGHTCONTROL_INC_STATERECO_HPP_ */

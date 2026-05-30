@@ -15,6 +15,7 @@
 #include "airbrakes.hpp"
 #include "stm32g4xx.h"
 #include "main.h"
+#include "AirbrakesStateReco.hpp"
 
 /* Enums ------------------------------------------------------------------*/
 enum AIRBRAKES_TASK_COMMANDS
