@@ -94,7 +94,7 @@ void CameraTask::Run(void *pvParams)
 		osDelay(100);
 
 		if(osdDriver.OSD_Status() == 0x00) {
-			HAL_GPIO_WritePin(VideoTX_Enable_GPIO_Port,VideoTX_Enable_Pin,GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(VideoTX_Enable_GPIO_Port,VideoTX_Enable_Pin,GPIO_PIN_SET);
 			needToResetOSD = true;
 		}
 
@@ -118,9 +118,7 @@ void CameraTask::Run(void *pvParams)
 			osdDriver.OSD_SetVideoEnabled(true);
 			HAL_GPIO_WritePin(VideoTX_Enable_GPIO_Port,VideoTX_Enable_Pin,GPIO_PIN_SET);
 
-			osdDriver.OSD_SetVideoEnabled(true);
-			HAL_GPIO_WritePin(VideoTX_Enable_GPIO_Port,VideoTX_Enable_Pin,GPIO_PIN_SET);
-			HAL_GPIO_WritePin(Video_Enable_GPIO_Port,Video_Enable_Pin,GPIO_PIN_SET);
+			HAL_GPIO_WritePin(Video_Enable_GPIO_Port,Video_Enable_Pin,GPIO_PIN_RESET);
 
 			needToResetOSD = false;
 
