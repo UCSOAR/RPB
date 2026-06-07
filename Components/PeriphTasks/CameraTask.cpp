@@ -65,6 +65,7 @@ void CameraTask::Run(void *pvParams)
 
 		}
 	}
+
 	osdDriver.OSD_WriteCustomCharacter(0xD0, logo_tile_0);
 	osdDriver.OSD_WriteCustomCharacter(0xD1, logo_tile_1);
 	osdDriver.OSD_WriteCustomCharacter(0xD2, logo_tile_2);
@@ -77,6 +78,8 @@ void CameraTask::Run(void *pvParams)
 	osdDriver.OSD_WriteCustomCharacter(0xE3, callsign_tile_3);
 	osdDriver.OSD_WriteCustomCharacter(0xE4, callsign_tile_4);
 
+	muxDriver.Enable();
+	muxDriver.Select(Camera::CAMERA2);
 	while (1)
 	{
 		/* Process commands */
@@ -88,11 +91,10 @@ void CameraTask::Run(void *pvParams)
 			HandleCommand(cm);
 		}
 
-
-
 		osDelay(100);
 
 		if(osdDriver.OSD_Status() == 0x00) {
+			HAL_GPIO_WritePin(VideoTX_Enable_GPIO_Port,VideoTX_Enable_Pin,GPIO_PIN_RESET);
 			needToResetOSD = true;
 		}
 
@@ -110,11 +112,15 @@ void CameraTask::Run(void *pvParams)
 			osdDriver.OSD_SetOSDEnabled(1);
 			osdDriver.OSD_SetOSDBL(1);
 
-			osdDriver.OSD_DrawLogo(0xE0, 1, 1,5,1);
-			osdDriver.OSD_DrawLogo(0xD0, 1, 11,5,1);
+			osdDriver.OSD_DrawLogo(0xE0, 4, 1,5,1);
+			osdDriver.OSD_DrawLogo(0xD0, 4, 11,5,1);
+
+			osdDriver.OSD_SetVideoEnabled(true);
+			HAL_GPIO_WritePin(VideoTX_Enable_GPIO_Port,VideoTX_Enable_Pin,GPIO_PIN_SET);
+
+			HAL_GPIO_WritePin(Video_Enable_GPIO_Port,Video_Enable_Pin,GPIO_PIN_RESET);
 
 			needToResetOSD = false;
-
 
 		}
 
