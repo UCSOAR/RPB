@@ -79,19 +79,6 @@ void CameraTask::Run(void *pvParams)
 	osdDriver.OSD_WriteCustomCharacter(0xE4, callsign_tile_4);
 
 
-	for (uint8_t cam = 0; cam < 3; cam++) {
-		Command startRec = {TASK_SPECIFIC_COMMAND,CAMERA_COMMAND_START_RECORDING};
-		startRec.CopyDataToCommand(&cam, sizeof(cam));
-		qEvtQueue->Send(startRec);
-
-	}
-
-	// Take cameras out of u-disk mode
-	RunCamCommand(USART1, 0x01);
-	RunCamCommand(USART2, 0x01);
-	RunCamCommand(USART3, 0x01);
-
-
 	muxDriver.Enable();
 	muxDriver.Select(Camera::CAMERA2);
 
