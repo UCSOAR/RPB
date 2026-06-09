@@ -78,8 +78,10 @@ void CameraTask::Run(void *pvParams)
 	osdDriver.OSD_WriteCustomCharacter(0xE3, callsign_tile_3);
 	osdDriver.OSD_WriteCustomCharacter(0xE4, callsign_tile_4);
 
+
 	muxDriver.Enable();
 	muxDriver.Select(Camera::CAMERA2);
+
 	while (1)
 	{
 		/* Process commands */
@@ -242,6 +244,17 @@ void CameraTask::HandleCommand(Command &cm)
 			default:
 				SOAR_PRINT("invalid cam %d\n",cam);
 				return;
+			}
+			break;
+		}
+		case CAMERA_COMMAND_IRC_TRAMP: {
+			RPB_IRCTRAMP_SET_COMMAND cmd = *(RPB_IRCTRAMP_SET_COMMAND*)cm.GetDataPointer();
+			if(cmd.setFreq) {
+				IRCTramp::SetVTXFrequency(cmd.freq, UART5);
+				osDelay(10);
+			}
+			if(cmd.setPower) {
+				IRCTramp::SetVTXPower(cmd.power, UART5);
 			}
 			break;
 		}

@@ -89,5 +89,15 @@ bool CANTask::HandleCANCommands() {
 		}
 	}
 
+	{
+		RPB_IRCTRAMP_SET_COMMAND cmd;
+		if(dau.ReadMessageByLogIndex(_RPB_IRCTRAMP_SET_COMMAND_LOGINDEX, (uint8_t*)&cmd,sizeof(cmd))) {
+			SOAR_PRINT("got irc tramp cmd\n");
+			Command cm = {TASK_SPECIFIC_COMMAND,CAMERA_COMMAND_IRC_TRAMP};
+			cm.CopyDataToCommand((uint8_t*)&cmd, sizeof(cmd));
+			CameraTask::Inst().SendCommandReference(cm);
+		}
+	}
+
 	return foundone;
 };
