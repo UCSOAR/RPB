@@ -12,6 +12,8 @@
 #include "CubeTask.hpp"
 #include "UARTTask.hpp"
 #include "CANTask.hpp"
+#include "CameraTask.hpp"
+#include "AirbrakesTask.hpp"
 
 /* Drivers ------------------------------------------------------------------*/
 namespace Driver
@@ -32,6 +34,8 @@ void run_main()
   CubeTask::Inst().InitTask();
   DebugTask::Inst().InitTask();
   CANTask::Inst().InitTask();
+  CameraTask::Inst().InitTask();
+  AirbrakesTask::Inst().InitTask();
 
   // Print System Boot Info : Warning, don't queue more than 10 prints before
   // scheduler starts
