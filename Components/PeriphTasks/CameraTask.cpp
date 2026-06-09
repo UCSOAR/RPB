@@ -77,6 +77,18 @@ void CameraTask::Run(void *pvParams)
 	osdDriver.OSD_WriteCustomCharacter(0xE3, callsign_tile_3);
 	osdDriver.OSD_WriteCustomCharacter(0xE4, callsign_tile_4);
 
+	for (uint8_t cam = 0; cam < 3; cam++) {
+		Command startRec = {TASK_SPECIFIC_COMMAND,CAMERA_COMMAND_START_RECORDING};
+		startRec.CopyDataToCommand(&cam, sizeof(cam));
+		qEvtQueue->Send(startRec);
+
+	}
+
+	// Take cameras out of weird useless usb mode
+	RunCamCommand(USART1, 0x01);
+	RunCamCommand(USART2, 0x01);
+	RunCamCommand(USART3, 0x01);
+
 	while (1)
 	{
 		/* Process commands */
