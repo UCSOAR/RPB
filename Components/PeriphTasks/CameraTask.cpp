@@ -239,6 +239,17 @@ void CameraTask::HandleCommand(Command &cm)
 			}
 			break;
 		}
+		case CAMERA_COMMAND_IRC_TRAMP: {
+			RPB_IRCTRAMP_SET_COMMAND cmd = *(RPB_IRCTRAMP_SET_COMMAND*)cm.GetDataPointer();
+			if(cmd.setFreq) {
+				IRCTramp::SetVTXFrequency(cmd.freq, UART5);
+				osDelay(10);
+			}
+			if(cmd.setPower) {
+				IRCTramp::SetVTXPower(cmd.power, UART5);
+			}
+			break;
+		}
 		default:
 			SOAR_PRINT("CameraTask - Received Unsupported Task Command {%d}\n", cm.GetTaskCommand());
 			break;
