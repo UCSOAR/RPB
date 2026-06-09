@@ -89,5 +89,15 @@ bool CANTask::HandleCANCommands() {
 		}
 	}
 
+	{
+		RPB_CAMERA_SIMULATE_BUTTON_COMMAND cmd;
+		if(dau.ReadMessageByLogIndex(_RPB_CAMERA_SIMULATE_BUTTON_COMMAND_LOGINDEX, (uint8_t*)&cmd,sizeof(cmd))) {
+			SOAR_PRINT("got sim button cmd %d btn %d\n",cmd.cam,cmd.button);
+			Command cm = {TASK_SPECIFIC_COMMAND,CAMERA_COMMAND_SIM_BUTTON};
+			cm.CopyDataToCommand((uint8_t*)&cmd, sizeof(cmd));
+			CameraTask::Inst().SendCommandReference(cm);
+		}
+	}
+
 	return foundone;
 };

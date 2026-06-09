@@ -145,12 +145,15 @@ void CameraTask::HandleCommand(Command &cm)
 			switch (cam) {
 			case 0:
 				muxDriver.Select(Camera::CAMERA1);
+				cm.Reset();
 				return;
 			case 1:
 				muxDriver.Select(Camera::CAMERA2);
+				cm.Reset();
 				return;
 			case 2:
 				muxDriver.Select(Camera::CAMERA3);
+				cm.Reset();
 				return;
 			}
 			SOAR_PRINT("Invalid camera %d should be 0-2\n",cam);
@@ -168,6 +171,29 @@ void CameraTask::HandleCommand(Command &cm)
 			HAL_GPIO_WritePin(VideoTX_Enable_GPIO_Port,VideoTX_Enable_Pin,GPIO_PIN_SET);
 			break;
 
+		case CAMERA_COMMAND_SIM_BUTTON: {
+			RPB_CAMERA_SIMULATE_BUTTON_COMMAND cmd = *(RPB_CAMERA_SIMULATE_BUTTON_COMMAND*)cm.GetDataPointer();
+			USART_TypeDef* uart;
+			switch (cmd.cam) {
+			case 0:
+				uart = USART1;
+				break;
+			case 1:
+				uart = USART2;
+				break;
+			case 2:
+				uart = USART3;
+				break;
+			default:
+				SOAR_PRINT("invalid cam %d\n",cmd.cam);
+				cm.Reset();
+				return;
+			}
+			RunCamCommand(uart, cmd.button);
+			break;
+		}
+
+
 		case CAMERA_COMMAND_START_RECORDING: {
 			uint8_t cam = *cm.GetDataPointer();
 			USART_TypeDef* uart;
@@ -183,6 +209,7 @@ void CameraTask::HandleCommand(Command &cm)
 				break;
 			default:
 				SOAR_PRINT("invalid cam %d\n",cam);
+				cm.Reset();
 				return;
 			}
 			RunCamCommand(uart, 0x03);
@@ -203,6 +230,7 @@ void CameraTask::HandleCommand(Command &cm)
 				break;
 			default:
 				SOAR_PRINT("invalid cam %d\n",cam);
+				cm.Reset();
 				return;
 			}
 			RunCamCommand(uart, 0x04);
@@ -223,6 +251,7 @@ void CameraTask::HandleCommand(Command &cm)
 				break;
 			default:
 				SOAR_PRINT("invalid cam %d\n",cam);
+				cm.Reset();
 				return;
 			}
 			break;
@@ -241,6 +270,7 @@ void CameraTask::HandleCommand(Command &cm)
 				break;
 			default:
 				SOAR_PRINT("invalid cam %d\n",cam);
+				cm.Reset();
 				return;
 			}
 			break;
