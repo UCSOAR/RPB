@@ -12,6 +12,7 @@
 #include <cstring>
 #include "CANTask.hpp"
 #include "stm32g4xx_hal.h"
+#include "AirbrakesTask.hpp"
 
 // External Tasks (to send debug commands to)
 
@@ -116,6 +117,14 @@ void DebugTask::HandleDebugMessage(const char *msg)
 	  SOAR_PRINT("sending0");
 	  RPB_AIR_BRAKES_COMMAND cmd = {false};
 	  CANTask::Inst().CANSendToMotherboardDirect(_RPB_AIR_BRAKES_COMMAND_LOGINDEX, (uint8_t*)&cmd);
+  }
+  else if (strcmp(msg, "c") == 0) {
+	  SOAR_PRINT("close");
+	  AirbrakesTask::Inst().SendCommand({TASK_SPECIFIC_COMMAND,AIRBRAKES_COMMAND_CLOSE});
+  }
+  else if (strcmp(msg, "o") == 0) {
+	  SOAR_PRINT("open");
+	  AirbrakesTask::Inst().SendCommand({TASK_SPECIFIC_COMMAND,AIRBRAKES_COMMAND_OPEN});
   }
   else
   {
