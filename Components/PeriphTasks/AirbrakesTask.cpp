@@ -52,13 +52,15 @@ void AirbrakesTask::Run(void *pvParams)
 
 	osDelay(500);
 
-	airbrakesDriver.Enable();
-	storedLevel = 5;
+
 
 	int32_t lastState = StateRecoverer::Inst().GetMostRecentState();
 	if(lastState >= 0) {
-		airbrakesDriver.SetTargetLevel(lastState);
+		SOAR_PRINT("reco %d\n",lastState);
+		airbrakesDriver.OverrideCurrentLevel(lastState);
 	}
+	airbrakesDriver.Enable();
+	storedLevel = 5;
 	while (1)
 	{
 		/* Process commands */
