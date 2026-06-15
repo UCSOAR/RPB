@@ -15,6 +15,7 @@
 #include "callsign.h"
 #include "logo.h"
 #include "RPBLogs.hpp"
+#include "IRCTramp.hpp"
 
 /**
  * @brief Constructor, sets up task
@@ -274,6 +275,60 @@ void CameraTask::HandleCommand(Command &cm)
 				return;
 			}
 			break;
+		}
+		case CAMERA_COMMAND_SET_TX_POWER: {
+			uint16_t power = *cm.GetDataPointer();
+			SOAR_PRINT("set tx power %d\n",power);
+
+			IRCTramp::POWER pow;
+			bool invalid = false;
+			switch(power) {
+			case 25:
+				pow = IRCTramp::POWER_25MW;
+				break;
+			case 200:
+				pow = IRCTramp::POWER_200MW;
+				break;
+			case 1000:
+				pow = IRCTramp::POWER_1W;
+				break;
+			case 4000:
+				pow = IRCTramp::POWER_4W;
+				break;
+			default:
+				SOAR_PRINT("invalid power\n");
+				invalid = true;
+				break;
+			}
+			if(!invalid){
+				IRCTramp::SetVTXPower(pow, UART5);
+			}
+			break;
+
+		}
+		case CAMERA_COMMAND_SET_TX_FREQ: {
+			uint16_t freq = *cm.GetDataPointer();
+			SOAR_PRINT("set tx freq %d\n",freq);
+
+			IRCTramp::FREQUENCY frequency;
+			bool invalid = false;
+			switch(freq) {
+			case 1258:
+				frequency = IRCTramp::FREQ_1258MHZ;
+				break;
+			case 1280:
+				frequency = IRCTramp::FREQ_1280MHZ;
+				break;
+			default:
+				SOAR_PRINT("invalid freq\n");
+				invalid = true;
+				break;
+			}
+			if(!invalid){
+				IRCTramp::SetVTXFrequency(frequency,UART5);
+			}
+			break;
+
 		}
 		default:
 			SOAR_PRINT("CameraTask - Received Unsupported Task Command {%d}\n", cm.GetTaskCommand());

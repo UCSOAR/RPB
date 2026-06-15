@@ -99,5 +99,25 @@ bool CANTask::HandleCANCommands() {
 		}
 	}
 
+	{
+		RPB_CAM_TX_CONTROL_COMMAND cmd;
+		if(dau.ReadMessageByLogIndex(_RPB_CAM_TX_CONTROL_COMMAND_LOGINDEX, (uint8_t*)&cmd,sizeof(cmd))) {
+			SOAR_PRINT("got tx cmd %d\n",cmd.fieldToSet);
+			if(cmd.fieldToSet == cmd.ENABLED) {
+				Command cm = {TASK_SPECIFIC_COMMAND,cmd.enabled ? CAMERA_COMMAND_VIDEO_ENABLE : CAMERA_COMMAND_VIDEO_DISABLE};
+				CameraTask::Inst().SendCommandReference(cm);
+			} else if(cmd.fieldToSet == cmd.POWER) {
+				Command cm = {TASK_SPECIFIC_COMMAND,CAMERA_COMMAND_SET_TX_POWER};
+				cm.CopyDataToCommand(cmd.power, sizeof(cmd.power));
+				CameraTask::Inst().SendCommandReference(cm);
+			} else if(cmd.fieldToSet == cmd.FREQ) {
+				Command cm = {TASK_SPECIFIC_COMMAND,CAMERA_COMMAND_SET_TX_FREQ};
+				cm.CopyDataToCommand(cmd.frequency, sizeof(cmd.frequency));
+				CameraTask::Inst().SendCommandReference(cm);
+			}
+
+		}
+	}
+
 	return foundone;
 };
