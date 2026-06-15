@@ -108,11 +108,11 @@ bool CANTask::HandleCANCommands() {
 				CameraTask::Inst().SendCommandReference(cm);
 			} else if(cmd.fieldToSet == cmd.POWER) {
 				Command cm = {TASK_SPECIFIC_COMMAND,CAMERA_COMMAND_SET_TX_POWER};
-				cm.CopyDataToCommand(cmd.power, sizeof(cmd.power));
+				cm.CopyDataToCommand((uint8_t*)&cmd.power, sizeof(cmd.power));
 				CameraTask::Inst().SendCommandReference(cm);
-			} else if(cmd.fieldToSet == cmd.FREQ) {
+			} else if(cmd.fieldToSet == cmd.FREQUENCY) {
 				Command cm = {TASK_SPECIFIC_COMMAND,CAMERA_COMMAND_SET_TX_FREQ};
-				cm.CopyDataToCommand(cmd.frequency, sizeof(cmd.frequency));
+				cm.CopyDataToCommand((uint8_t*)&cmd.freq, sizeof(cmd.freq));
 				CameraTask::Inst().SendCommandReference(cm);
 			}
 
